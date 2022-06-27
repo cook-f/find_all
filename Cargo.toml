@@ -1,6 +1,6 @@
 [package]
 name = "find_all"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2021"
 authors = ["Fred Cook"]
 description = "A (nearly) identical alternative for `Iterator::find` which returns a `Vec<usize>` containing all elements which meet a given predicate (instead of just the first)"
