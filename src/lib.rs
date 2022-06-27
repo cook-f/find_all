@@ -5,6 +5,9 @@
 //! let test_data = [1, 2, 3, 4, 1, 1, 1, 1];
 //! let indexes = find_all::find_all(test_data.iter(), |num: &i32| *num == 9);
 //! assert_eq!(indexes, None);
+//!
+//! let indexes = find_all::find_all(test_data.iter(), |num: &i32| *num == 1);
+//! assert_eq!(indexes, Some(vec![0,4,5,6,7]));
 //! ```
 
 /// ```rust
