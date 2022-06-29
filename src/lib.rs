@@ -27,25 +27,43 @@
 /// let indexes = find_all::find_all(test_data.iter(), |string| string.contains('o'));
 /// assert_eq!(indexes, Some(vec![0, 1, 2]));
 /// ```
-pub fn find_all<I, P>(iter: I, mut predicate: P) -> Option<Vec<usize>>
+pub trait IteratorExt: Iterator + Sized {
+    fn find_all<P>(&mut self, predicate: P) -> Option<Vec<usize>>
+    where
+        P: FnMut(&Self::Item) -> bool;
+}
+
+impl<I> IteratorExt for I
 where
     I: Iterator,
-    P: FnMut(I::Item) -> bool,
 {
-    let mut occurences = Vec::<usize>::default();
-    for (index, element) in iter.enumerate() {
-        if predicate(element) {
-            occurences.push(index);
+    fn find_all<P>(&mut self, mut predicate: P) -> Option<Vec<usize>>
+    where
+        P: FnMut(&Self::Item) -> bool,
+    {
+        let mut occurences = Vec::<usize>::default();
+        for (index, element) in self.enumerate() {
+            if predicate(&element) {
+                occurences.push(index);
+            }
         }
-    }
 
-    match occurences.len() {
-        0 => None,
-        _ => Some(occurences),
+        match occurences.len() {
+            0 => None,
+            _ => Some(occurences),
+        }
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test() {
+        let test_data = vec![1, 2, 3, 1, 1, 1];
+        let occurences = test_data.iter().find_all(|element| **element == 1);
+
+        assert_eq!(occurences, Some(vec![0, 3, 4, 5]))
+    }
 }
